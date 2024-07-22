@@ -1,0 +1,112 @@
+﻿<Window x:Class="harunadev.OSCRelay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        mc:Ignorable="d"
+        Title="OSCRelay by harunadev" MinHeight="360" MinWidth="560" Height="380" Width="580">
+    <DockPanel>
+        <Menu Width="Auto" Height="Auto" DockPanel.Dock="Top">
+            <MenuItem Name="Menu_File" Header="File(_F)">
+                <MenuItem x:Name="Menu_File_LoadConfig" Header="Load Config (_L)" HorizontalAlignment="Left" Width="240" Click="LoadConfig_Click"/>
+                <MenuItem x:Name="Menu_File_SaveConfig" Header="Save Config (_S)" HorizontalAlignment="Left" Width="240" Click="SaveConfig_Click"/>
+                <MenuItem x:Name="Menu_File_SetSteamVRAutoLaunch" Header="Set SteamVR Auto Launch (_A)" HorizontalAlignment="Left" Width="240" Click="SetSteamVRAutoLaunch_Click"/>
+                <MenuItem x:Name="Menu_File_UnsetSteamVRAutoLaunch" Header="Unset SteamVR Auto Launch (_U)" HorizontalAlignment="Left" Width="240" Click="UnsetSteamVRAutoLaunch_Click"/>
+                <MenuItem x:Name="Menu_File_AppExit" Header="Exit (_X)" HorizontalAlignment="Left" Width="240" Click="AppExit_Click"/>
+            </MenuItem>
+            <MenuItem Name="Menu_Help"  Header="Help(_H)">
+                <MenuItem x:Name="Menu_Help_About" Header="About OSCRelay (_A)" HorizontalAlignment="Left" Width="240" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" />
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Up Part -->
+            <Grid Grid.Row="0" Margin="12,12,12,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/Icons/application-import-custom.png" VerticalAlignment="Center" Width="24" Height="24" Grid.Column="0" Margin="0,0,12,0"/>
+                <TextBlock Text="Listener" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <TextBlock Name="ConnectStatusText" Text="Listening from 127.0.0.1:9001" VerticalAlignment="Center" Grid.Column="2" Margin="5,0" Foreground="Gray" FontSize="10" TextWrapping="Wrap" />
+                <ToggleButton Name="ConnectToggleButton" Click="ConnectToggleButton_Click" Content="Connected" VerticalAlignment="Center" Grid.Column="3" Margin="5,0" IsChecked="False"/>
+            </Grid>
+
+            <!-- Down Part -->
+            <Grid Grid.Row="1" Margin="12,6,12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/Icons/application-export-custom.png" VerticalAlignment="Center" Width="24" Height="24" Grid.Column="0" Margin="0,0,12,0"/>
+                <TextBlock Text="Sender" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <Grid Grid.Row="1" Grid.Column="2" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Name="SenderTargetListParseResultText" Text="Sender" VerticalAlignment="Center" Grid.Row="0" Margin="5,0" Foreground="Gray" FontSize="10" TextWrapping="Wrap"/>
+                    <TextBox Name="SenderTargetList" TextChanged="SenderTargetList_TextChanged" Grid.Row="1" Margin="6" AcceptsReturn="True" VerticalScrollBarVisibility="Auto">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{ui:StaticResource ResourceKey={x:Type TextBox}}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                <Style.Resources>
+                                    <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Top" Stretch="None">
+                                        <VisualBrush.Transform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="8" Y="4"/>
+                                            </TransformGroup>
+                                        </VisualBrush.Transform>
+                                        <VisualBrush.Visual>
+                                            <Label Content="Example: 127.0.0.1:9002" Foreground="Gray"/>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Style.Resources>
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="CaretBrush" Value="White" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <TextBlock Name="SenderTargetListParseErrorText" MaxWidth="218" Text="Sender" Grid.Row="1" Grid.Column="2" Margin="5,0" Foreground="Gray" FontSize="10" TextWrapping="Wrap"/>
+
+                </Grid>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

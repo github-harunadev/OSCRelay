@@ -1,0 +1,16 @@
+{
+	"source": "builtin",
+	"applications": [{
+		"app_key": "harunadev.OSCRelay",
+		"launch_type": "binary",
+		"binary_path_windows": "OSCRelay.exe",
+		"is_dashboard_overlay": true,
+
+		"strings": {
+			"en_us": {
+				"name": "OSCRelay",
+				"description": "Receive OSC Message and relay them to other addresses"
+			}
+		}
+	}]
+}
